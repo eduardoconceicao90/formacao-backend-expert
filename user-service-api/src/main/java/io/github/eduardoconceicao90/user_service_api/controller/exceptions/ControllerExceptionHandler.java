@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDateTime;
 
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
@@ -17,11 +19,11 @@ public class ControllerExceptionHandler {
     ResponseEntity<StandardError> handleNotFoundException(
             final ResourceNotFoundException ex, final HttpServletRequest request
             ){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+        return ResponseEntity.status(NOT_FOUND).body(
                 StandardError.builder()
                         .timestamp(LocalDateTime.now())
-                        .status(HttpStatus.NOT_FOUND.value())
-                        .error(HttpStatus.NOT_FOUND.getReasonPhrase())
+                        .status(NOT_FOUND.value())
+                        .error(NOT_FOUND.getReasonPhrase())
                         .message(ex.getMessage())
                         .path(request.getRequestURI())
                     .build()
