@@ -26,15 +26,15 @@ public class UserService {
         return userMapper.fromEntity(find(id));
     }
 
-    public List<UserResponse> findAll() {
-        return userRepository.findAll().stream().map(userMapper::fromEntity).toList();
-    }
-
     public void save(CreateUserRequest createUserRequest) {
         verifyIfEmailAlreadyExists(createUserRequest.email(), null);
         userRepository.save(userMapper.fromRequest(createUserRequest)
                 .withPassword(encoder.encode(createUserRequest.password()))
         );
+    }
+
+    public List<UserResponse> findAll() {
+        return userRepository.findAll().stream().map(userMapper::fromEntity).toList();
     }
 
     public UserResponse update(final String id, final UpdateUserRequest updateUserRequest) {

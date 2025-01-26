@@ -46,11 +46,14 @@ dependencies {
     // Spring Security Crypto to encode password
     implementation 'org.springframework.security:spring-security-crypto:5.5.1'
 
+    // Biblioteca para geração de dados aleatórios para testes
+    implementation 'uk.co.jemos.podam:podam:7.2.6.RELEASE'
+
     // Dependência de teste
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    // Biblioteca para geração de dados aleatórios para testes
-    implementation 'uk.co.jemos.podam:podam:7.2.6.RELEASE'
+    // Mockito test dependency
+    testImplementation 'org.mockito:mockito-inline:4.11.0'
 }
 
 dependencyManagement {
