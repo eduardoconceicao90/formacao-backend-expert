@@ -4,6 +4,7 @@ import io.github.eduardoconceicao90.user_service_api.entity.User;
 import io.github.eduardoconceicao90.user_service_api.mapper.UserMapper;
 import io.github.eduardoconceicao90.user_service_api.repository.UserRepository;
 import models.exceptions.ResourceNotFoundException;
+import models.requests.CreateUserRequest;
 import models.responses.UserResponse;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.List;
 import java.util.Optional;
 
+import static io.github.eduardoconceicao90.user_service_api.creator.CreatorUtils.generateMock;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -37,7 +39,7 @@ class UserServiceTest {
     @Test
     void whenCallFindByIdWithValidIdThenReturnUserResponse() {
         when(userRepository.findById(anyString())).thenReturn(Optional.of(new User()));
-        when(userMapper.fromEntity(any(User.class))).thenReturn(mock(UserResponse.class));
+        when(userMapper.fromEntity(any(User.class))).thenReturn(generateMock(UserResponse.class));
 
         final var userResponse = userService.findById("1");
 
@@ -45,8 +47,8 @@ class UserServiceTest {
         assertNotNull(userResponse);
         assertEquals(UserResponse.class, userResponse.getClass());
 
-        verify(userRepository, times(1)).findById(anyString());
-        verify(userMapper, times(1)).fromEntity(any(User.class));
+        verify(userRepository).findById(anyString());
+        verify(userMapper).fromEntity(any(User.class));
     }
 
     @Test
@@ -61,14 +63,14 @@ class UserServiceTest {
             assertEquals("Object not found. Id: 1, Type: UserResponse", e.getMessage());
         }
 
-        verify(userRepository, times(1)).findById(anyString());
+        verify(userRepository).findById(anyString());
         verify(userMapper, never()).fromEntity(any(User.class));
     }
 
     @Test
     void whenCalFindAllThenReturnListOfUserResponse() {
         when(userRepository.findAll()).thenReturn(List.of(new User(), new User()));
-        when(userMapper.fromEntity(any(User.class))).thenReturn(mock(UserResponse.class));
+        when(userMapper.fromEntity(any(User.class))).thenReturn(generateMock(UserResponse.class));
 
         final var userResponseList = userService.findAll();
 
@@ -78,8 +80,25 @@ class UserServiceTest {
         assertEquals(2, userResponseList.size());
         assertEquals(UserResponse.class, userResponseList.get(0).getClass());
 
-        verify(userRepository, times(1)).findAll();
+        verify(userRepository).findAll();
         verify(userMapper, times(2)).fromEntity(any(User.class));
+    }
+
+    @Test
+    void whenCallSaveThenSuccess() {
+        final var request = generateMock(CreateUserRequest.class);
+
+        when(userMapper.fromRequest(any())).thenReturn(new User());
+        when(encoder.encode(anyString())).thenReturn("encoded");
+        when(userRepository.save(any(User.class))).thenReturn(new User());
+        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+
+        userService.save(request);
+
+        verify(userMapper).fromRequest(request);
+        verify(encoder).encode(request.password());
+        verify(userRepository).save(any(User.class));
+        verify(userRepository).findByEmail(request.email());
     }
 
 }
