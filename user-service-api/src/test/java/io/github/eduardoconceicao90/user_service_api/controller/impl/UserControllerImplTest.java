@@ -1,12 +1,13 @@
 package io.github.eduardoconceicao90.user_service_api.controller.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.eduardoconceicao90.user_service_api.entity.User;
 import io.github.eduardoconceicao90.user_service_api.repository.UserRepository;
+import models.requests.CreateUserRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -14,7 +15,9 @@ import java.util.List;
 
 import static io.github.eduardoconceicao90.user_service_api.creator.CreatorUtils.generateMock;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -72,6 +75,28 @@ class UserControllerImplTest {
                 .andExpect(jsonPath("$[1].profiles").isArray());
 
         userRepository.deleteAll(List.of(entity1, entity2));
+    }
+
+    @Test
+    void testSaveUserWithSuccess() throws Exception {
+        final var validEmail = "dDAVFCcAS@mail.com";
+        final var request = generateMock(CreateUserRequest.class).withEmail(validEmail);
+
+        mockMvc.perform(post("/api/users")
+                .contentType(APPLICATION_JSON)
+                .content(toJson(request))
+        ).andExpect(status().isCreated());
+
+        userRepository.deleteByEmail(validEmail);
+
+    }
+
+    private String toJson(final Object object) throws Exception {
+        try {
+            return new ObjectMapper().writeValueAsString(object);
+        } catch (Exception e) {
+            throw new Exception("Error converting object to JSON", e);
+        }
     }
 
 }
