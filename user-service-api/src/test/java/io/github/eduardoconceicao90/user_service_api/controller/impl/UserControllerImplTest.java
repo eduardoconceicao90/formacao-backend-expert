@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.eduardoconceicao90.user_service_api.entity.User;
 import io.github.eduardoconceicao90.user_service_api.repository.UserRepository;
 import models.requests.CreateUserRequest;
+import models.requests.UpdateUserRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,11 +15,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static io.github.eduardoconceicao90.user_service_api.creator.CreatorUtils.generateMock;
-import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -111,6 +112,43 @@ class UserControllerImplTest {
                 .andExpect(jsonPath("$.timestamp").isNotEmpty());
 
         userRepository.deleteById(entity.getId());
+    }
+
+    @Test
+    void testSaveUserWithNameEmptyThenThrowBadRequest() throws Exception {
+        final var validEmail = "dDAVFCcAS@mail.com";
+        final var request = generateMock(CreateUserRequest.class).withName("").withEmail(validEmail);
+
+        mockMvc.perform(post("/api/users")
+                .contentType(APPLICATION_JSON)
+                .content(toJson(request))
+        ).andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Exception in validation attributes"))
+                .andExpect(jsonPath("$.error").value("Validation Exception"))
+                .andExpect(jsonPath("$.path").value("/api/users"))
+                .andExpect(jsonPath("$.status").value(BAD_REQUEST.value()))
+                .andExpect(jsonPath("$.timestamp").isNotEmpty())
+                .andExpect(jsonPath("$.timestamp").isNotEmpty())
+                .andExpect(jsonPath("$.errors[?(@.fieldName=='name' && @.message=='Name cannot be empty')]").exists());
+    }
+
+    @Test
+    void testUpdateUserWithNameLessThenThreeCharactersThenThrowBadRequest() throws Exception{
+        final var request = generateMock(UpdateUserRequest.class).withName("ab");
+        final var VALID_ID = userRepository.save(generateMock(User.class)).getId();
+
+        mockMvc.perform(put("/api/users/{id}", VALID_ID)
+                .contentType(APPLICATION_JSON)
+                .content(toJson(request))
+        ).andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Exception in validation attributes"))
+                .andExpect(jsonPath("$.error").value("Validation Exception"))
+                .andExpect(jsonPath("$.path").value("/api/users/" + VALID_ID))
+                .andExpect(jsonPath("$.status").value(BAD_REQUEST.value()))
+                .andExpect(jsonPath("$.timestamp").isNotEmpty())
+                .andExpect(jsonPath("$.errors[?(@.fieldName=='name' && @.message=='Name must contain between 3 and 50 characters')]").exists());
+
+        userRepository.deleteById(VALID_ID);
     }
 
     private String toJson(final Object object) throws Exception {
