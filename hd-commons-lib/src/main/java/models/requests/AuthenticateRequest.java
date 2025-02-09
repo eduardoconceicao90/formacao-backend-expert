@@ -15,7 +15,7 @@ public record AuthenticateRequest(
         @Size(min = 6, max = 50, message = "Email must contain between 6 and 50 characters")
         String email,
 
-        @Schema(description = "User password", example = "12345")
+        @Schema(description = "User password", example = "123456")
         @NotBlank(message = "Password cannot be empty")
         @Size(min = 6, max = 50, message = "Password must contain between 6 and 50 characters")
         String password
