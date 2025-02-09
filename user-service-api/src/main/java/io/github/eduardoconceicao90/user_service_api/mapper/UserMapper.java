@@ -25,4 +25,5 @@ public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
     User update(UpdateUserRequest updateUserRequest, @MappingTarget User entity);
+
 }
