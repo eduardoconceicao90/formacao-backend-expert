@@ -32,8 +32,8 @@ public class JWTAuthenticationImpl {
         log.info("Successfully authenticated user: {}", userDetails.getUsername());
         final var token = jwtUtil.generateToken(userDetails);
         return AuthenticateResponse.builder()
-                .token("Bearer " + token)
-                .type("JWT")
+                .type("Bearer")
+                .token(token)
                 .build();
     }
 }

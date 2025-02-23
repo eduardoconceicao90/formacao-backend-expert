@@ -8,10 +8,7 @@ spring:
 jwt:
   secret: 'fteCGmFQxqIIPYzz5X2AD3Ft64ZSgQ0PugoYWkoF5+uMrC+bDfSIl6WMk/qL+dunFLI5foEtDcIopX/atgLXmVxZkEs9GXiyaEPOwRD5dbk='
   expiration: 7200000 # 2 hours
-
-jwt:
-  secret: 'fteCGmFQxqIIPYzz5X2AD3Ft64ZSgQ0PugoYWkoF5+uMrC+bDfSIl6WMk/qL+dunFLI5foEtDcIopX/atgLXmVxZkEs9GXiyaEPOwRD5dbk='
-  expiration: 7200000 # 2 hours
+  expiration-refresh-hours: 4
 
 server:
   port: 8081
