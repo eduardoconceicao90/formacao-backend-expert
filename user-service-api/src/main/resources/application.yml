@@ -1,12 +1,8 @@
 spring:
   application:
     name: 'user-service-api'
-  data:
-    mongodb:
-      uri: 'mongodb+srv://help-desk-user:h3lp-D3sk-u53r@clusterhelpdesk.byesqfs.mongodb.net/helpdeskdb?retryWrites=true&w=majority&appName=ClusterHelpDesk'
-      auto-index-creation: true
-springdoc:
-  openapi:
-    title: 'User Service API'
-    description: 'Component responsible for user management created on Formação Backend Expert'
-    version: '1.0.0'
+  profiles:
+    active: dev
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER_URI:http://localhost:8888}
