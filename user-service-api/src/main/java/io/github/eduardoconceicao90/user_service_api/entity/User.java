@@ -23,4 +23,5 @@ public class User {
     private String email;
     private String password;
     private Set<ProfileEnum> profiles;
+
 }

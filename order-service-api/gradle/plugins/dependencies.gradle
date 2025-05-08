@@ -31,10 +31,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // Starter para integração com o H2 Database
-    implementation 'com.h2database:h2'
+    //implementation 'com.h2database:h2'
 
     // Driver do MySQL
-    //implementation 'mysql:mysql-connector-java:8.0.32'
+    implementation 'mysql:mysql-connector-java:8.0.32'
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'
