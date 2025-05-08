@@ -1,14 +1,8 @@
 spring:
   application:
     name: 'order-service-api'
-
-  datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+  profiles:
+    active: dev
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER_URI:http://localhost:8888}
