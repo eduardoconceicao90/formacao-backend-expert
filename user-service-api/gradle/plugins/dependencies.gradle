@@ -5,32 +5,45 @@ repositories {
 }
 
 dependencies {
-    // Actuator - Monitoramento e gerenciamento de aplicações Spring Boot
-    implementation 'org.springframework.boot:spring-boot-actuator'
+    implementation ('io.github.eduardoconceicao90:hd-commons-lib:1.0.0') {
+        because('Lib para compartilhar código comum entre os projetos')
+    }
 
-    // Biblioteca de código comum
-    implementation 'io.github.eduardoconceicao90:hd-commons-lib:1.0.0'
+    implementation('org.springframework.boot:spring-boot-actuator') {
+        because('Starter para monitoramento e gerenciamento de aplicações Spring Boot')
+    }
 
-    // Starter para desenvolvimento de aplicativos web com Spring Boot
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation ('org.springframework.boot:spring-boot-starter-web') {
+        because('Starter para criar aplicação web, incluindo aplicação RESTful, usando Spring MVC. Usa Tomcat como container padrão.')
+    }
 
-    // Starter para configuração do Spring Cloud Config
-    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation ('org.springframework.cloud:spring-cloud-starter-config') {
+        because('Starter para integrar com o Spring Cloud Config Server')
+    }
 
-    // Starter para configuração do Spring Cloud
-    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+    implementation ('org.springframework.cloud:spring-cloud-starter-bootstrap') {
+        because('Starter para integrar com o Spring Cloud Config Server')
+    }
 
-    // Starter para integração com o Eureka Discovery Client
-    // implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+//    implementation ('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client') {
+//        because('Starter para integrar com o Spring Cloud Eureka Server')
+//    }
 
-    // Starter para acesso a dados com o MongoDB
-    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation ('org.springframework.boot:spring-boot-starter-data-mongodb') {
+        because('Starter para integrar com o MongoDB')
+    }
 
-    // Starter para validação de dados
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation ('org.springframework.boot:spring-boot-starter-validation') {
+        because('Starter para validação de dados')
+    }
 
-    // Starter para geração de documentação OpenAPI com Springdoc
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
+    implementation ('org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4') {
+        because('Starter para geração de documentação OpenAPI com Springdoc')
+    }
+
+    implementation ('org.springframework.security:spring-security-crypto:5.5.1') {
+        because('Spring Security Crypto to encode password')
+    }
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'
@@ -43,14 +56,13 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 
-    // Spring Security Crypto to encode password
-    implementation 'org.springframework.security:spring-security-crypto:5.5.1'
+    implementation ('uk.co.jemos.podam:podam:7.2.6.RELEASE') {
+        because('Biblioteca para geração de dados aleatórios para testes')
+    }
 
-    // Biblioteca para geração de dados aleatórios para testes
-    implementation 'uk.co.jemos.podam:podam:7.2.6.RELEASE'
-
-    // Dependência de teste
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation ('org.springframework.boot:spring-boot-starter-test') {
+        because('Spring Boot Test Starter')
+    }
 }
 
 dependencyManagement {

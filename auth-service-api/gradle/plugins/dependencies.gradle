@@ -9,6 +9,10 @@ ext {
 }
 
 dependencies {
+    implementation ('io.github.eduardoconceicao90:hd-commons-lib:1.0.0') {
+        because('Lib para compartilhar código comum entre os projetos')
+    }
+
     implementation('org.springframework.boot:spring-boot-actuator') {
         because('Starter para monitoramento e gerenciamento de aplicações Spring Boot')
     }
@@ -37,10 +41,6 @@ dependencies {
         because('Starter para validação de dados')
     }
 
-    implementation ('io.github.eduardoconceicao90:hd-commons-lib:1.0.0') {
-        because('Lib para compartilhar código comum entre os projetos')
-    }
-
     implementation ('org.springframework.boot:spring-boot-starter-security') {
         because('Starter para integrar com o Spring Security')
     }
@@ -60,6 +60,8 @@ dependencies {
     // Lombok - Redução de código boilerplate
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // Binding para o MapStruct com Lombok
     implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
     // MapStruct - Mapeamento de objetos Java
