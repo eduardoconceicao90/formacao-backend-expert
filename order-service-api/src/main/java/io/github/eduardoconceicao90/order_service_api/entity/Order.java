@@ -30,10 +30,10 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 36)
     private String requesterId;
 
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 36)
     private String customerId;
 
     @Column(nullable = false, length = 50)
