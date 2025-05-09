@@ -37,7 +37,7 @@ public class UserService {
         return userRepository.findAll().stream().map(userMapper::fromEntity).toList();
     }
 
-    public UserResponse update(final String id, final UpdateUserRequest updateUserRequest) {
+    public UserResponse update(final String id, UpdateUserRequest updateUserRequest) {
         User entity = find(id);
         verifyIfEmailAlreadyExists(updateUserRequest.email(), id);
         return userMapper.fromEntity(userRepository.save(userMapper.update(updateUserRequest, entity)
