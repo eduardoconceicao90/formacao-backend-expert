@@ -30,7 +30,7 @@ public interface AuthController {
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = StandardError.class)))
     })
     @PostMapping("/login")
-    ResponseEntity<AuthenticateResponse> authenticate(@Valid @RequestBody final AuthenticateRequest request) throws Exception;
+    ResponseEntity<AuthenticateResponse> authenticate(@Valid @RequestBody AuthenticateRequest request) throws Exception;
 
     @Operation(summary = "Refresh user")
     @ApiResponses(value = {
@@ -41,5 +41,5 @@ public interface AuthController {
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = StandardError.class)))
     })
     @PostMapping("/refresh-token")
-    ResponseEntity<RefreshTokenResponse> refreshToken(@Valid @RequestBody final RefreshTokenRequest request);
+    ResponseEntity<RefreshTokenResponse> refreshToken(@Valid @RequestBody RefreshTokenRequest request);
 }

@@ -1,4 +1,4 @@
-package io.github.eduardoconceicao90.user_service_api.controller.exceptions;
+package io.github.eduardoconceicao90.user_service_api.controller.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import models.exceptions.ResourceNotFoundException;

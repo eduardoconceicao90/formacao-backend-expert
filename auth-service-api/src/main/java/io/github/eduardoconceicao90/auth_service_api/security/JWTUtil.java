@@ -17,7 +17,7 @@ public class JWTUtil {
     @Value("${jwt.expiration}")
     private Long expiration;
 
-    public String generateToken(final UserDetailsDTO userDetails) {
+    public String generateToken(UserDetailsDTO userDetails) {
         return Jwts.builder()
                 .claim("id", userDetails.getId())
                 .claim("name", userDetails.getName())

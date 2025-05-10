@@ -64,7 +64,7 @@ public interface UserController {
     })
     @PostMapping
     ResponseEntity<Void> save(
-        @Valid @RequestBody final CreateUserRequest createUserRequest
+        @Valid @RequestBody CreateUserRequest createUserRequest
     );
 
     @Operation(summary = "Find all users")
@@ -106,6 +106,6 @@ public interface UserController {
     ResponseEntity<UserResponse> update(
             @Parameter(description = "User id", required = true, example = "64a2dc9d48a6a977cdca11c8")
             @PathVariable(name = "id") final String id,
-            @Valid @RequestBody final UpdateUserRequest updateUserRequest
+            @Valid @RequestBody UpdateUserRequest updateUserRequest
     );
 }

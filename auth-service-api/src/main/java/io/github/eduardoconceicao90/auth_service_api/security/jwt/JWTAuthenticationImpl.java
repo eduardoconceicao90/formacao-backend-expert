@@ -17,7 +17,7 @@ public class JWTAuthenticationImpl {
     private final JWTUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticateResponse authenticate(final AuthenticateRequest request) {
+    public AuthenticateResponse authenticate(AuthenticateRequest request) {
         try {
             log.info("Authenticating user: {}", request.email());
             final var authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
@@ -28,7 +28,7 @@ public class JWTAuthenticationImpl {
         }
     }
 
-    protected AuthenticateResponse buildAuthenticationResponse(final UserDetailsDTO userDetails) {
+    protected AuthenticateResponse buildAuthenticationResponse(UserDetailsDTO userDetails) {
         log.info("Successfully authenticated user: {}", userDetails.getUsername());
         final var token = jwtUtil.generateToken(userDetails);
         return AuthenticateResponse.builder()

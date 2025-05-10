@@ -10,9 +10,8 @@ import java.util.Arrays;
 public enum OrderStatusEnum {
 
     OPEN("Open"),
-    CLOSED("Closed"),
     IN_PROGRESS("In progress"),
-    COMPLETED("Completed"),
+    CLOSED("Closed"),
     CANCELED("Canceled");
 
     @Getter

@@ -26,7 +26,7 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<Void> save(final CreateUserRequest createUserRequest) {
+    public ResponseEntity<Void> save(CreateUserRequest createUserRequest) {
         userService.save(createUserRequest);
         return ResponseEntity.status(CREATED.value()).build();
     }
@@ -37,7 +37,7 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<UserResponse> update(final String id, final UpdateUserRequest updateUserRequest) {
+    public ResponseEntity<UserResponse> update(final String id, UpdateUserRequest updateUserRequest) {
         return ResponseEntity.ok().body(userService.update(id, updateUserRequest));
     }
 }

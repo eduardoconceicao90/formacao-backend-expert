@@ -18,7 +18,7 @@ import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 )
 public interface UserMapper {
 
-    UserResponse fromEntity(final User entity);
+    UserResponse fromEntity(User entity);
 
     @Mapping(target = "id", ignore = true)
     User fromRequest(CreateUserRequest createUserRequest);
