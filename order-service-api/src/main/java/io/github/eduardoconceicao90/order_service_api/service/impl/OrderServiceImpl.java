@@ -29,14 +29,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponse update(Long id, UpdateOrderRequest updateOrderRequest) {
+    public OrderResponse update(final Long id, UpdateOrderRequest updateOrderRequest) {
         Order entity = findById(id);
         closedOrder(updateOrderRequest, entity);
         return orderMapper.fromEntity(orderRepository.save(orderMapper.update(updateOrderRequest, entity)));
     }
 
     @Override
-    public Order findById(Long id) {
+    public void deleteById(final Long id) {
+        orderRepository.delete(findById(id));
+    }
+
+    @Override
+    public Order findById(final Long id) {
         return orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
                 "Object not found. Id: " + id + ", Type: " + OrderResponse.class.getSimpleName()
         ));
