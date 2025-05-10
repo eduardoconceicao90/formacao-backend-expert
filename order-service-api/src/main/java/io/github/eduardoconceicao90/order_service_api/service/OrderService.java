@@ -7,7 +7,7 @@ import models.responses.OrderResponse;
 
 public interface OrderService {
 
-    Order find(Long id);
+    Order findById(Long id);
 
     void closedOrder(UpdateOrderRequest updateOrderRequest, Order entity);
 

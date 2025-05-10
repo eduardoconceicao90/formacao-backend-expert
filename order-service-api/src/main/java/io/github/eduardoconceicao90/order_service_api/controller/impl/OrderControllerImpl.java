@@ -1,6 +1,7 @@
 package io.github.eduardoconceicao90.order_service_api.controller.impl;
 
 import io.github.eduardoconceicao90.order_service_api.controller.OrderController;
+import io.github.eduardoconceicao90.order_service_api.mapper.OrderMapper;
 import io.github.eduardoconceicao90.order_service_api.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import models.requests.CreateOrderRequest;
@@ -16,6 +17,12 @@ import static org.springframework.http.HttpStatus.CREATED;
 public class OrderControllerImpl implements OrderController {
 
     private final OrderService orderService;
+    private final OrderMapper orderMapper;
+
+    @Override
+    public ResponseEntity<OrderResponse> findById(final Long id) {
+        return ResponseEntity.ok().body(orderMapper.fromEntity(orderService.findById(id)));
+    }
 
     @Override
     public ResponseEntity<Void> save(CreateOrderRequest createOrderRequest) {
