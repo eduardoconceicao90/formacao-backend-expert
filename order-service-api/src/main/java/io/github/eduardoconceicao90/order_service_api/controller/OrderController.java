@@ -13,9 +13,9 @@ import jakarta.validation.constraints.NotNull;
 import models.exceptions.StandardError;
 import models.requests.CreateOrderRequest;
 import models.requests.UpdateOrderRequest;
-import models.requests.UpdateUserRequest;
 import models.responses.OrderResponse;
 import models.responses.UserResponse;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -153,5 +153,34 @@ public interface OrderController {
     })
     @GetMapping
     ResponseEntity<List<OrderResponse>> findAll();
+
+    @Operation(summary = "Find all orders paginated")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Orders found",
+                    content = @Content(
+                            mediaType = APPLICATION_JSON_VALUE,
+                            array = @ArraySchema(schema = @Schema(implementation = UserResponse.class))
+                    )),
+            @ApiResponse(
+                    responseCode = "500", description = "Internal server error",
+                    content = @Content(
+                            mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class)
+                    ))
+    })
+    @GetMapping(params = {"page", "size", "sort", "direction"})
+    ResponseEntity<Page<OrderResponse>> findAllPaginated(
+            @Parameter(description = "Page number", required = true, example = "0")
+            @RequestParam(name = "page", defaultValue = "0") final Integer page,
+
+            @Parameter(description = "Page size", required = true, example = "10")
+            @RequestParam(name = "size", defaultValue = "10") final Integer size,
+
+            @Parameter(description = "Sort direction", required = true, example = "ASC")
+            @RequestParam(name = "direction", defaultValue = "ASC") final String direction,
+
+            @Parameter(description = "Sort by", required = true, example = "id")
+            @RequestParam(name = "sort", defaultValue = "id") final String sort
+    );
 
 }
