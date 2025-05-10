@@ -13,6 +13,7 @@ import models.responses.OrderResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static models.enums.OrderStatusEnum.*;
 
@@ -38,6 +39,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteById(final Long id) {
         orderRepository.delete(findById(id));
+    }
+
+    @Override
+    public List<OrderResponse> findAll() {
+        return orderRepository.findAll().stream().map(orderMapper::fromEntity).toList();
     }
 
     @Override
