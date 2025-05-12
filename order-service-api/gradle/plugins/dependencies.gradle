@@ -25,6 +25,10 @@ dependencies {
         because('Starter para integrar com o Spring Cloud Config Server')
     }
 
+    implementation ('org.springframework.cloud:spring-cloud-starter-openfeign') {
+        because('Starter para integrar com o Spring Cloud OpenFeign')
+    }
+
 //    implementation ('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client') {
 //        because('Starter para integrar com o Spring Cloud Eureka Server')
 //    }
