@@ -11,6 +11,7 @@ import models.exceptions.ResourceNotFoundException;
 import models.requests.CreateOrderRequest;
 import models.requests.UpdateOrderRequest;
 import models.responses.OrderResponse;
+import models.responses.UserResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -32,7 +33,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void save(CreateOrderRequest createOrderRequest) {
-        validateUser(createOrderRequest.requesterId());
+        final var customer = validateUser(createOrderRequest.customerId());
+        final var requester = validateUser(createOrderRequest.requesterId());
+
+        log.info("Customer: {}", customer);
+        log.info("Requester: {}", requester);
+
         orderRepository.save(orderMapper.fromRequest(createOrderRequest));
     }
 
@@ -73,9 +79,8 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    void validateUser(final String userId) {
-        final var response = userServiceFeignClient.findById(userId).getBody();
-        log.info("User found: {}", response);
+    UserResponse validateUser(final String userId) {
+        return userServiceFeignClient.findById(userId).getBody();
     }
 
 }

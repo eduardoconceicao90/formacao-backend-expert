@@ -1,6 +1,7 @@
 package io.github.eduardoconceicao90.order_service_api.controller.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import models.exceptions.GenericFeignException;
 import models.exceptions.ResourceNotFoundException;
 import models.exceptions.StandardError;
 import models.exceptions.ValidationException;
@@ -8,16 +9,22 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.*;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ControllerExceptionHandler {
+
+    @ExceptionHandler(GenericFeignException.class)
+    ResponseEntity<Map> handleGenericFeignException(final GenericFeignException ex){
+        return ResponseEntity.status(ex.getStatus()).body(ex.getError());
+    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     ResponseEntity<StandardError> handleNotFoundException(
