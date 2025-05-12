@@ -1,11 +1,12 @@
 package io.github.eduardoconceicao90.order_service_api.service.impl;
 
+import io.github.eduardoconceicao90.order_service_api.client.UserServiceFeignClient;
 import io.github.eduardoconceicao90.order_service_api.entity.Order;
 import io.github.eduardoconceicao90.order_service_api.mapper.OrderMapper;
 import io.github.eduardoconceicao90.order_service_api.repository.OrderRepository;
 import io.github.eduardoconceicao90.order_service_api.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import models.enums.OrderStatusEnum;
+import lombok.extern.slf4j.Slf4j;
 import models.exceptions.ResourceNotFoundException;
 import models.requests.CreateOrderRequest;
 import models.requests.UpdateOrderRequest;
@@ -18,17 +19,20 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static models.enums.OrderStatusEnum.*;
+import static models.enums.OrderStatusEnum.CLOSED;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
+    private final UserServiceFeignClient userServiceFeignClient;
 
     @Override
     public void save(CreateOrderRequest createOrderRequest) {
+        validateUser(createOrderRequest.requesterId());
         orderRepository.save(orderMapper.fromRequest(createOrderRequest));
     }
 
@@ -67,6 +71,11 @@ public class OrderServiceImpl implements OrderService {
         if(updateOrderRequest.status() != null && updateOrderRequest.status().equals(CLOSED.getDescription())) {
             entity.setClosedAt(LocalDateTime.now());
         }
+    }
+
+    void validateUser(final String userId) {
+        final var response = userServiceFeignClient.findById(userId).getBody();
+        log.info("User found: {}", response);
     }
 
 }
