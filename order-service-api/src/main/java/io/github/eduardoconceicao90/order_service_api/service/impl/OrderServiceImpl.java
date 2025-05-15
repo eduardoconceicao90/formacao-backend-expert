@@ -7,11 +7,13 @@ import io.github.eduardoconceicao90.order_service_api.repository.OrderRepository
 import io.github.eduardoconceicao90.order_service_api.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import models.dtos.OrderCreatedMessage;
 import models.exceptions.ResourceNotFoundException;
 import models.requests.CreateOrderRequest;
 import models.requests.UpdateOrderRequest;
 import models.responses.OrderResponse;
 import models.responses.UserResponse;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -30,16 +32,21 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final UserServiceFeignClient userServiceFeignClient;
+    private final RabbitTemplate rabbitTemplate;
 
     @Override
     public void save(CreateOrderRequest createOrderRequest) {
         final var customer = validateUser(createOrderRequest.customerId());
         final var requester = validateUser(createOrderRequest.requesterId());
+        final var entity = orderRepository.save(orderMapper.fromRequest(createOrderRequest));
 
-        log.info("Customer: {}", customer);
-        log.info("Requester: {}", requester);
+        log.info("Order created: {}", entity);
 
-        orderRepository.save(orderMapper.fromRequest(createOrderRequest));
+        rabbitTemplate.convertAndSend(
+                "helpdesk",
+                "rk.orders.create",
+                new OrderCreatedMessage(orderMapper.fromEntity(entity), customer, requester)
+        );
     }
 
     @Override

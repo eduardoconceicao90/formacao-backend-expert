@@ -41,6 +41,10 @@ dependencies {
         because('Starter para validação de dados')
     }
 
+    implementation ('org.springframework.boot:spring-boot-starter-amqp') {
+        because('Starter para integração com RabbitMQ')
+    }
+
     implementation ('com.h2database:h2') {
         because('Driver para o H2 Database')
     }

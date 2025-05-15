@@ -31,7 +31,7 @@ services:
     environment:
       - CONFIG_SERVER_URI=https://github.com/eduardoconceicao90/formacao-backend-expert-configs
       - CONFIG_SERVER_USERNAME=eduardoconceicao90
-      - CONFIG_SERVER_PASSWORD=***********************************
+      - CONFIG_SERVER_PASSWORD=*************************
       - PORT=8888
     ports:
       - "8888:8888"
