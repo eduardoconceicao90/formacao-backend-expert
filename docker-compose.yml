@@ -1,0 +1,64 @@
+version: "3.8"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - "15672:15672" # Management UI
+      - "5672:5672"   # RabbitMQ
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - helpdesk_network
+  
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: 'dozzle'
+    ports:
+      - "8080:8080" # Porta para acessar a interface do Dozzle
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - helpdesk_network
+
+  config-server:
+    container_name: 'config-server'
+    build:
+      context: ./config-server
+      dockerfile: Dockerfile
+    environment:
+      - CONFIG_SERVER_URI=https://github.com/eduardoconceicao90/formacao-backend-expert-configs
+      - CONFIG_SERVER_USERNAME=eduardoconceicao90
+      - CONFIG_SERVER_PASSWORD=***********************************
+      - PORT=8888
+    ports:
+      - "8888:8888"
+    expose:
+      - 8888
+    networks:
+      - helpdesk_network
+
+  service-discovery:
+    container_name: 'service-discovery'
+    build:
+      context: ./service-discovery
+      dockerfile: Dockerfile
+    environment:
+      - CONFIG_SERVER_URI=config-server:8888
+      - PORT=8761
+    ports:
+      - "8761:8761"
+    expose:
+      - 8761
+    networks:
+      - helpdesk_network
+    depends_on:
+      - config-server
+    links:
+      - config-server
+
+networks:
+  helpdesk_network:
+    driver: bridge
