@@ -1,4 +1,4 @@
-package io.github.eduardoconceicao90.email_service.infra.config;
+package io.github.eduardoconceicao90.email_service.config;
 
 import org.springframework.amqp.support.converter.SimpleMessageConverter;
 import org.springframework.context.annotation.Bean;

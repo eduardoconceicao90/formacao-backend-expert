@@ -1,6 +1,6 @@
-package io.github.eduardoconceicao90.email_service.infra.listener;
+package io.github.eduardoconceicao90.email_service.listener;
 
-import io.github.eduardoconceicao90.email_service.infra.util.EmailUtils;
+import io.github.eduardoconceicao90.email_service.util.EmailUtils;
 import io.github.eduardoconceicao90.email_service.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -33,10 +33,6 @@ dependencies {
         because('Thymeleaf é um mecanismo de template para Java')
     }
 
-//    implementation ('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client') {
-//        because('Starter para integrar com o Spring Cloud Eureka Server')
-//    }
-
     implementation ('org.springframework.boot:spring-boot-starter-amqp') {
         because('Starter para integração com RabbitMQ')
     }

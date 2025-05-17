@@ -1,7 +1,7 @@
 package io.github.eduardoconceicao90.email_service.service;
 
 import io.github.eduardoconceicao90.email_service.dto.EmailRequest;
-import io.github.eduardoconceicao90.email_service.infra.util.ThymeleafUtils;
+import io.github.eduardoconceicao90.email_service.util.ThymeleafUtils;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;

@@ -1,8 +1,8 @@
 spring:
   application:
     name: 'email-service'
-server:
-  port: 8082
-mail:
-  username: ${MAIL_USERNAME:eduardodevjavaweb@gmail.com}
-  password: ${MAIL_PASSWORD:nxev ubuc bxfa ikmv}
+  profiles:
+    active: dev
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER_URI:http://localhost:8888}

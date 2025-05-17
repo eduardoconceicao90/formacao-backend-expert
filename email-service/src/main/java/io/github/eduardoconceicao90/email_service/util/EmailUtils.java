@@ -1,4 +1,4 @@
-package io.github.eduardoconceicao90.email_service.infra.util;
+package io.github.eduardoconceicao90.email_service.util;
 
 import io.github.eduardoconceicao90.email_service.dto.EmailRequest;
 import lombok.experimental.UtilityClass;
