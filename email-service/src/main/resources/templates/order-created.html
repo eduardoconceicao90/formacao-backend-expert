@@ -1,0 +1,111 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR" style="font-family: 'Segoe UI', Roboto, sans-serif;">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-size: 16px;
+      color: #2c3e50;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(to right, #eef2f3, #ffffff);
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+      transition: all 0.3s ease;
+    }
+
+    h3 {
+      color: #34495e;
+      font-weight: 600;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    p {
+      text-align: center;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    .details {
+      border-top: 1px solid #e0e0e0;
+      padding-top: 20px;
+    }
+
+    .details h2 {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      color: #2c3e50;
+      text-align: center;
+    }
+
+    .details ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .details li {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 0.95rem;
+    }
+
+    .details li:last-child {
+      border-bottom: none;
+    }
+
+    .details strong {
+      font-weight: 600;
+      color: #34495e;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 14px;
+      color: #888;
+    }
+
+    @media (max-width: 600px) {
+      .details li {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h3>Olá <span th:text="${customerName}" style="color: #2980b9;"></span>,</h3>
+  <p>Sua ordem de serviço foi criada com sucesso!</p>
+
+  <div class="details">
+    <h2>Detalhes da Ordem</h2>
+    <ul>
+      <li><strong>Título:</strong> <span th:text="${orderTitle}"></span></li>
+      <li><strong>Descrição:</strong> <span th:text="${orderDescription}"></span></li>
+      <li><strong>Status:</strong> <span th:text="${orderStatus}"></span></li>
+      <li><strong>Técnico Responsável:</strong> <span th:text="${requesterName}"></span></li>
+      <li><strong>Data de Criação:</strong> <span th:text="${createdAt}"></span></li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    <p>Obrigado por utilizar nossos serviços!</p>
+  </div>
+</div>
+
+</body>
+</html>

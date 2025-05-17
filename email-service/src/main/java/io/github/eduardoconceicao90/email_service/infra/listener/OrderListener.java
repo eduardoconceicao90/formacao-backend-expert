@@ -1,8 +1,7 @@
-package io.github.eduardoconceicao90.email_service.listener;
+package io.github.eduardoconceicao90.email_service.infra.listener;
 
+import io.github.eduardoconceicao90.email_service.infra.util.EmailUtils;
 import io.github.eduardoconceicao90.email_service.service.EmailService;
-import io.github.eduardoconceicao90.email_service.util.UtilEmail;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import models.dtos.OrderCreatedMessage;
@@ -11,8 +10,6 @@ import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
-
-import java.io.UnsupportedEncodingException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,9 +23,10 @@ public class OrderListener {
                 key = "rk.orders.create",
                 value = @Queue(value = "queue.orders")
     ))
-    public void listener(OrderCreatedMessage order) throws Exception {
-        log.info("Order service processing: {}", order);
-        emailService.sendEmail(order);
+    public void listenerOrderCreated(OrderCreatedMessage order) throws Exception {
+        log.info("Order service create processing: {}", order);
+        var email = EmailUtils.contextCreatedOrder(order);
+        emailService.sendEmail(email);
     }
 
 }

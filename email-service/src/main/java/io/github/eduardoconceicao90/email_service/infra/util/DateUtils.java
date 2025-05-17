@@ -1,4 +1,4 @@
-package io.github.eduardoconceicao90.email_service.util;
+package io.github.eduardoconceicao90.email_service.infra.util;
 
 import lombok.experimental.UtilityClass;
 
@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @UtilityClass
-public class UtilDate {
+public class DateUtils {
 
     public String convertDate(String date) {
         return DateTimeFormatter.ofPattern("dd/MM/yyyy").format(

@@ -1,4 +1,4 @@
-package io.github.eduardoconceicao90.email_service.config;
+package io.github.eduardoconceicao90.email_service.infra.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
