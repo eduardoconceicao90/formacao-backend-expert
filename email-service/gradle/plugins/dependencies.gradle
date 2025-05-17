@@ -17,8 +17,8 @@ dependencies {
         because('Starter para criar aplicação web, incluindo aplicação RESTful, usando Spring MVC. Usa Tomcat como container padrão.')
     }
 
-    implementation ('org.springframework.cloud:spring-cloud-starter-mail') {
-        because('Starter para integrar com o Spring Cloud Mail')
+    implementation ('org.springframework.boot:spring-boot-starter-mail') {
+        because('Starter para enviar e-mails')
     }
 
     implementation ('org.springframework.cloud:spring-cloud-starter-config') {
