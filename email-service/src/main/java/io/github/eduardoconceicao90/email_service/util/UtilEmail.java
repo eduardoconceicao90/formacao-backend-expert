@@ -9,20 +9,20 @@ import java.time.format.DateTimeFormatter;
 @UtilityClass
 public class UtilEmail {
 
-    public String messageOrderCreated(OrderCreatedMessage message){
-        return  "Olá, " + message.getCustomer().name() + "<br/>" +
+    public String messageOrderCreated(OrderCreatedMessage order){
+        return  "Olá, " + order.getCustomer().name() + "<br/>" +
                 "Sua ordem de serviço foi criada com sucesso!<br/><br/>" +
 
                 "<b>Dados do cliente:</b><br/>" +
-                "Nome: " + message.getCustomer().name() + "<br/>" +
-                "E-mail: " + message.getCustomer().email() + "<br/><br/>" +
+                "Nome: " + order.getCustomer().name() + "<br/>" +
+                "E-mail: " + order.getCustomer().email() + "<br/><br/>" +
 
                 "<b>Dados da ordem:</b><br/>" +
-                "Título: " + message.getOrder().title() + "<br/>" +
-                "Descrição: " + message.getOrder().description() + "<br/>" +
-                "Status: " + message.getOrder().status() + "<br/>" +
-                "Técnico reponsável: " + message.getRequester().name() + "<br/>" +
-                "Data de criação: " + UtilDate.convertDate(message.getOrder().createdAt()) + "<br/><br/>";
+                "Título: " + order.getOrder().title() + "<br/>" +
+                "Descrição: " + order.getOrder().description() + "<br/>" +
+                "Status: " + order.getOrder().status() + "<br/>" +
+                "Técnico reponsável: " + order.getRequester().name() + "<br/>" +
+                "Data de criação: " + UtilDate.convertDate(order.getOrder().createdAt()) + "<br/><br/>";
     }
 
 }
