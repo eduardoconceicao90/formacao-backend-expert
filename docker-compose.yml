@@ -22,6 +22,20 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - helpdesk_network
+      
+  service-discovery:
+    container_name: 'service-discovery'
+    build:
+      context: ./service-discovery
+      dockerfile: Dockerfile
+    environment:
+      - PORT=8761
+    ports:
+      - "8761:8761"
+    expose:
+      - 8761
+    networks:
+      - helpdesk_network
 
   config-server:
     container_name: 'config-server'
@@ -31,33 +45,15 @@ services:
     environment:
       - CONFIG_SERVER_URI=https://github.com/eduardoconceicao90/formacao-backend-expert-configs
       - CONFIG_SERVER_USERNAME=eduardoconceicao90
-      - CONFIG_SERVER_PASSWORD=*************************
+      - CONFIG_SERVER_PASSWORD=**************************
       - PORT=8888
+      - EUREKA_URI=http://service-discovery:8761/eureka
     ports:
       - "8888:8888"
     expose:
       - 8888
     networks:
       - helpdesk_network
-
-  service-discovery:
-    container_name: 'service-discovery'
-    build:
-      context: ./service-discovery
-      dockerfile: Dockerfile
-    environment:
-      - CONFIG_SERVER_URI=config-server:8888
-      - PORT=8761
-    ports:
-      - "8761:8761"
-    expose:
-      - 8761
-    networks:
-      - helpdesk_network
-    depends_on:
-      - config-server
-    links:
-      - config-server
 
 networks:
   helpdesk_network:

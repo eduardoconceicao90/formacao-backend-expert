@@ -7,8 +7,10 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+
 server:
-  port: ${SERVER_PORT:8765}
+  port: ${GATEWAY_SERVER_PORT:8765}
+
 eureka:
   client:
     fetch-registry: true
