@@ -7,8 +7,14 @@ spring:
     config:
       uri: 'config-server'
 
+springdoc:
+  openapi:
+    title: 'BFF Helpdesk API'
+    description: 'Component responsible for aggregating and exposing the Helpdesk APIs'
+    version: '1.0.0'
+
 server:
-  port: ${BFF_PORT:8087}
+  port: ${SERVER_PORT:8087}
 
 eureka:
   client:
