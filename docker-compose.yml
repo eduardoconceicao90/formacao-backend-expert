@@ -43,17 +43,79 @@ services:
       context: ./config-server
       dockerfile: Dockerfile
     environment:
+      - EUREKA_URI=http://service-discovery:8761/eureka
       - CONFIG_SERVER_URI=https://github.com/eduardoconceicao90/formacao-backend-expert-configs
       - CONFIG_SERVER_USERNAME=eduardoconceicao90
-      - CONFIG_SERVER_PASSWORD=**************************
+      - CONFIG_SERVER_PASSWORD=*************************
       - PORT=8888
-      - EUREKA_URI=http://service-discovery:8761/eureka
     ports:
       - "8888:8888"
     expose:
       - 8888
     networks:
       - helpdesk_network
+      
+  api-gateway:
+    container_name: 'api-gateway'
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    environment:
+      - EUREKA_URI=http://service-discovery:8761/eureka
+      - PORT=8765
+    ports:
+      - "8765:8765"
+    expose:
+      - 8765
+    networks:
+      - helpdesk_network
+      
+  # auth-service-api:
+  #   container_name: 'auth-service-api'
+  #   build:
+  #     context: ./auth-service-api
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - PROFILE_ACTIVE=dev
+  #     - CONFIG_SERVER_URI=http://config-server:8888
+  #   networks:
+  #     - helpdesk_network
+      
+  email-service:
+    container_name: 'email-service'
+    build:
+      context: ./email-service
+      dockerfile: Dockerfile
+    environment:
+      - PROFILE_ACTIVE=dev
+      - CONFIG_SERVER_URI=http://config-server:8888
+    depends_on:
+    - service-discovery
+    - config-server
+    networks:
+      - helpdesk_network
+      
+  # user-service-api:
+  #   container_name: 'user-service-api'
+  #   build:
+  #     context: ./user-service-api
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - PROFILE_ACTIVE=dev
+  #     - CONFIG_SERVER_URI=http://config-server:8888
+  #   networks:
+  #     - helpdesk_network
+
+  # order-service-api:
+  #   container_name: 'order-service-api'
+  #   build:
+  #     context: ./order-service-api
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - PROFILE_ACTIVE=dev
+  #     - CONFIG_SERVER_URI=http://config-server:8888
+  #   networks:
+  #     - helpdesk_network
 
 networks:
   helpdesk_network:

@@ -13,14 +13,6 @@ dependencies {
         because('Spring Cloud Netflix Eureka Server')
     }
 
-    implementation ('org.springframework.cloud:spring-cloud-starter-config') {
-        because('Starter para integrar com o Spring Cloud Config Server')
-    }
-
-    implementation ('org.springframework.cloud:spring-cloud-starter-bootstrap') {
-        because('Starter para integrar com o Spring Cloud Config Server')
-    }
-
     testImplementation ('org.springframework.boot:spring-boot-starter-test') {
         because('Spring Boot Test Starter')
     }
