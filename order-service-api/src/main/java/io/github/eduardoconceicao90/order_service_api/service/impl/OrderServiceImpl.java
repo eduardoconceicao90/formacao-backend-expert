@@ -35,6 +35,13 @@ public class OrderServiceImpl implements OrderService {
     private final RabbitTemplate rabbitTemplate;
 
     @Override
+    public Order findById(final Long id) {
+        return orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+                "Object not found. Id: " + id + ", Type: " + OrderResponse.class.getSimpleName()
+        ));
+    }
+
+    @Override
     public void save(CreateOrderRequest createOrderRequest) {
         final var customer = validateUser(createOrderRequest.customerId());
         final var requester = validateUser(createOrderRequest.requesterId());
@@ -71,13 +78,6 @@ public class OrderServiceImpl implements OrderService {
     public Page<OrderResponse> findAllPaginated(Integer page, Integer size, String direction, String sort) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.valueOf(direction), sort);
         return orderRepository.findAll(pageRequest).map(orderMapper::fromEntity);
-    }
-
-    @Override
-    public Order findById(final Long id) {
-        return orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
-                "Object not found. Id: " + id + ", Type: " + OrderResponse.class.getSimpleName()
-        ));
     }
 
     @Override

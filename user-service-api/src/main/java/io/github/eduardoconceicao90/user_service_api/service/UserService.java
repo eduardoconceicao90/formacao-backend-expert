@@ -22,6 +22,12 @@ public class UserService {
     private final UserMapper userMapper;
     private final BCryptPasswordEncoder encoder;
 
+    public User findById(final String id) {
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+                "Object not found. Id: " + id + ", Type: " + UserResponse.class.getSimpleName()
+        ));
+    }
+
     public void save(CreateUserRequest createUserRequest) {
         verifyIfEmailAlreadyExists(createUserRequest.email(), null);
         userRepository.save(userMapper.fromRequest(createUserRequest)
@@ -39,12 +45,6 @@ public class UserService {
         return userMapper.fromEntity(userRepository.save(userMapper.update(updateUserRequest, entity)
                 .withPassword(updateUserRequest.password() != null ? encoder.encode(updateUserRequest.password()) : entity.getPassword()))
         );
-    }
-
-    public User findById(final String id) {
-        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
-                "Object not found. Id: " + id + ", Type: " + UserResponse.class.getSimpleName()
-        ));
     }
 
     private void verifyIfEmailAlreadyExists(final String email, final String id){
