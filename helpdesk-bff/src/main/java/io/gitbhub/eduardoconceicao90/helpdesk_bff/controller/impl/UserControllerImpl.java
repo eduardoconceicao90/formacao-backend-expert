@@ -2,10 +2,10 @@ package io.gitbhub.eduardoconceicao90.helpdesk_bff.controller.impl;
 
 import io.gitbhub.eduardoconceicao90.helpdesk_bff.controller.UserController;
 import io.gitbhub.eduardoconceicao90.helpdesk_bff.service.UserService;
-import lombok.RequiredArgsConstructor;
 import models.requests.CreateUserRequest;
 import models.requests.UpdateUserRequest;
 import models.responses.UserResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,10 +14,10 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
-@RequiredArgsConstructor
 public class UserControllerImpl implements UserController {
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
     @Override
     public ResponseEntity<UserResponse> findById(final String id) {

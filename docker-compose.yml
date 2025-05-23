@@ -1,27 +1,27 @@
 version: "3.8"
 
 services:
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-    container_name: 'rabbitmq'
-    ports:
-      - "15672:15672" # Management UI
-      - "5672:5672"   # RabbitMQ
-    volumes:
-      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
-    networks:
-      - helpdesk_network
+  # rabbitmq:
+  #   image: rabbitmq:3-management-alpine
+  #   container_name: 'rabbitmq'
+  #   ports:
+  #     - "15672:15672" # Management UI
+  #     - "5672:5672"   # RabbitMQ
+  #   volumes:
+  #     - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+  #     - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+  #   networks:
+  #     - helpdesk_network
   
-  dozzle:
-    image: amir20/dozzle:latest
-    container_name: 'dozzle'
-    ports:
-      - "8080:8080" # Porta para acessar a interface do Dozzle
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - helpdesk_network
+  # dozzle:
+  #   image: amir20/dozzle:latest
+  #   container_name: 'dozzle'
+  #   ports:
+  #     - "8085:8085" # Porta para acessar a interface do Dozzle
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   networks:
+  #     - helpdesk_network
       
   service-discovery:
     container_name: 'service-discovery'
@@ -57,22 +57,22 @@ services:
     networks:
       - helpdesk_network
       
-  api-gateway:
-    container_name: 'api-gateway'
-    build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
-    environment:
-      - EUREKA_URI=http://service-discovery:8761/eureka
-      - SERVER_PORT=8765
-    ports:
-      - "8765:8765"
-    expose:
-      - 8765
-    depends_on:
-      - service-discovery
-    networks:
-      - helpdesk_network
+  # api-gateway:
+  #   container_name: 'api-gateway'
+  #   build:
+  #     context: ./api-gateway
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - EUREKA_URI=http://service-discovery:8761/eureka
+  #     - SERVER_PORT=8765
+  #   ports:
+  #     - "8765:8765"
+  #   expose:
+  #     - 8765
+  #   depends_on:
+  #     - service-discovery
+  #   networks:
+  #     - helpdesk_network
       
   # auth-service-api:
   #   container_name: 'auth-service-api'
