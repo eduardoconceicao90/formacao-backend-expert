@@ -34,4 +34,5 @@ public class AuthControllerImpl implements AuthController {
     public ResponseEntity<RefreshTokenResponse> refreshToken(RefreshTokenRequest request) {
         return ResponseEntity.ok().body(refreshTokenService.refreshToken(request.refreshToken()));
     }
+
 }

@@ -1,7 +1,5 @@
 package io.gitbhub.eduardoconceicao90.helpdesk_bff.client;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import jakarta.validation.Valid;
 import models.requests.CreateOrderRequest;
 import models.requests.UpdateOrderRequest;
 import models.responses.OrderResponse;
@@ -22,13 +20,10 @@ public interface OrderFeignClient {
     ResponseEntity<OrderResponse> findById(@PathVariable(name = "id") final Long id);
 
     @PostMapping
-    ResponseEntity<Void> save(@Valid @RequestBody CreateOrderRequest createOrderRequest);
+    ResponseEntity<Void> save(@RequestBody CreateOrderRequest createOrderRequest);
 
     @PutMapping("/{id}")
-    ResponseEntity<OrderResponse> update(
-            @PathVariable(name = "id") final Long id,
-            @Valid @RequestBody UpdateOrderRequest updateOrderRequest
-    );
+    ResponseEntity<OrderResponse> update(@PathVariable(name = "id") final Long id, @RequestBody UpdateOrderRequest updateOrderRequest);
 
     @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteById(@PathVariable(name = "id") final Long id);
@@ -38,10 +33,10 @@ public interface OrderFeignClient {
 
     @GetMapping(params = {"page", "size", "sort", "direction"})
     ResponseEntity<Page<OrderResponse>> findAllPaginated(
-            @RequestParam(name = "page", defaultValue = "0") final Integer page,
-            @RequestParam(name = "size", defaultValue = "10") final Integer size,
-            @RequestParam(name = "direction", defaultValue = "ASC") final String direction,
-            @RequestParam(name = "sort", defaultValue = "id") final String sort
+                @RequestParam(name = "page", defaultValue = "0") final Integer page,
+                @RequestParam(name = "size", defaultValue = "10") final Integer size,
+                @RequestParam(name = "direction", defaultValue = "ASC") final String direction,
+                @RequestParam(name = "sort", defaultValue = "id") final String sort
     );
 
 }

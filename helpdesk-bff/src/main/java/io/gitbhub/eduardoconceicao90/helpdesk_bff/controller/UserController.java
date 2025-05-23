@@ -108,4 +108,5 @@ public interface UserController {
             @PathVariable(name = "id") final String id,
             @Valid @RequestBody UpdateUserRequest updateUserRequest
     );
+
 }

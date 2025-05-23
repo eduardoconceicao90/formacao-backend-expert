@@ -1,4 +1,4 @@
-package io.github.eduardoconceicao90.auth_service_api.controller;
+package io.gitbhub.eduardoconceicao90.helpdesk_bff.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
