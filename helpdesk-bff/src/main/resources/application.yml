@@ -3,24 +3,3 @@ spring:
     name: 'helpdesk-bff'
   profiles:
     active: dev
-  cloud:
-    config:
-      uri: 'config-server'
-
-springdoc:
-  openapi:
-    title: 'BFF Helpdesk API'
-    description: 'Component responsible for aggregating and exposing the Helpdesk APIs'
-    version: '1.0.0'
-
-server:
-  port: ${SERVER_PORT:8080}
-
-eureka:
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
-  instance:
-    instance-id: ${spring.application.name}:${server.port}

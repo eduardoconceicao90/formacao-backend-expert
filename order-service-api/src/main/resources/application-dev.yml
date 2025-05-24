@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: 'order-service-api'
   jpa:
     hibernate:
       ddl-auto: update
