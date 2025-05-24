@@ -14,7 +14,7 @@ dependencies {
     }
 
     implementation('org.springframework.boot:spring-boot-actuator') {
-        because('Starter para monitoramento e gerenciamento de aplicações Spring Boot')
+        because('Monitoramento, métricas, health checks e endpoints de gerenciamento')
     }
 
     implementation ('org.springframework.boot:spring-boot-starter-web') {

@@ -1,6 +1,9 @@
-FROM openjdk:21-jdk
-ARG JAR_FILE=./build/libs/*.jar
-COPY ${JAR_FILE} application.jar
-EXPOSE 8765
+FROM gradle:8.5-jdk21 AS build
+WORKDIR /app
+COPY . .
+RUN gradle clean build -x test
 
-ENTRYPOINT ["java", "-jar", "/application.jar"]
+FROM openjdk:21-jdk
+WORKDIR /app
+COPY --from=build /app/build/libs/*.jar application.jar
+ENTRYPOINT ["java", "-jar", "/app/application.jar"]

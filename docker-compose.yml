@@ -1,27 +1,27 @@
 version: "3.8"
 
 services:
-  # rabbitmq:
-  #   image: rabbitmq:3-management-alpine
-  #   container_name: 'rabbitmq'
-  #   ports:
-  #     - "15672:15672" # Management UI
-  #     - "5672:5672"   # RabbitMQ
-  #   volumes:
-  #     - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-  #     - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
-  #   networks:
-  #     - helpdesk_network
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - "15672:15672" # Management UI
+      - "5672:5672"   # RabbitMQ
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - helpdesk_network
   
-  # dozzle:
-  #   image: amir20/dozzle:latest
-  #   container_name: 'dozzle'
-  #   ports:
-  #     - "8085:8085" # Porta para acessar a interface do Dozzle
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #   networks:
-  #     - helpdesk_network
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: 'dozzle'
+    ports:
+      - "8085:8080" # Porta para acessar a interface do Dozzle
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - helpdesk_network
       
   service-discovery:
     container_name: 'service-discovery'
@@ -34,6 +34,11 @@ services:
       - "8761:8761"
     expose:
       - 8761
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://service-discovery:8761/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     networks:
       - helpdesk_network
 
@@ -46,33 +51,45 @@ services:
       - EUREKA_URI=http://service-discovery:8761/eureka
       - CONFIG_SERVER_URI=https://github.com/eduardoconceicao90/formacao-backend-expert-configs
       - CONFIG_SERVER_USERNAME=eduardoconceicao90
-      - CONFIG_SERVER_PASSWORD=*********************************
+      - CONFIG_SERVER_PASSWORD=*********************************************
       - SERVER_PORT=8888
     ports:
       - "8888:8888"
     expose:
       - 8888
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://config-server:8888/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     depends_on:
-      - service-discovery
+      service-discovery:
+        condition: service_healthy
     networks:
       - helpdesk_network
       
-  # api-gateway:
-  #   container_name: 'api-gateway'
-  #   build:
-  #     context: ./api-gateway
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     - EUREKA_URI=http://service-discovery:8761/eureka
-  #     - SERVER_PORT=8765
-  #   ports:
-  #     - "8765:8765"
-  #   expose:
-  #     - 8765
-  #   depends_on:
-  #     - service-discovery
-  #   networks:
-  #     - helpdesk_network
+  api-gateway:
+    container_name: 'api-gateway'
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    environment:
+      - EUREKA_URI=http://service-discovery:8761/eureka
+      - SERVER_PORT=8765
+    ports:
+      - "8765:8765"
+    expose:
+      - 8765
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://api-gateway:8765/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      service-discovery:
+        condition: service_healthy
+    networks:
+      - helpdesk_network
       
   # auth-service-api:
   #   container_name: 'auth-service-api'
@@ -85,19 +102,7 @@ services:
   #     - CONFIG_SERVER_URI=http://config-server:8888
   #   networks:
   #     - helpdesk_network
-      
-  # email-service:
-  #   container_name: 'email-service'
-  #   build:
-  #     context: ./email-service
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     - PROFILE_ACTIVE=dev
-  #     - EUREKA_URI=http://service-discovery:8761/eureka
-  #     - CONFIG_SERVER_URI=http://config-server:8888
-  #   networks:
-  #     - helpdesk_network
-      
+            
   # user-service-api:
   #   container_name: 'user-service-api'
   #   build:
@@ -114,6 +119,18 @@ services:
   #   container_name: 'order-service-api'
   #   build:
   #     context: ./order-service-api
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - PROFILE_ACTIVE=dev
+  #     - EUREKA_URI=http://service-discovery:8761/eureka
+  #     - CONFIG_SERVER_URI=http://config-server:8888
+  #   networks:
+  #     - helpdesk_network
+
+  # email-service:
+  #   container_name: 'email-service'
+  #   build:
+  #     context: ./email-service
   #     dockerfile: Dockerfile
   #   environment:
   #     - PROFILE_ACTIVE=dev
