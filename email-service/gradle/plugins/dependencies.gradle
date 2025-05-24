@@ -25,6 +25,10 @@ dependencies {
         because('Starter para enviar e-mails')
     }
 
+    implementation ('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client') {
+        because('Starter para integrar com o Spring Cloud Eureka Server')
+    }
+
     implementation ('org.thymeleaf:thymeleaf:3.0.12.RELEASE'){
         because('Thymeleaf é um mecanismo de template para Java')
     }

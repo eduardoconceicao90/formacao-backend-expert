@@ -1,18 +1,6 @@
 version: "3.8"
 
 services:
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-    container_name: 'rabbitmq'
-    ports:
-      - "15672:15672" # Management UI
-      - "5672:5672"   # RabbitMQ
-    volumes:
-      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
-    networks:
-      - helpdesk_network
-  
   dozzle:
     image: amir20/dozzle:latest
     container_name: 'dozzle'
@@ -22,13 +10,31 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - helpdesk_network
-      
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - "15672:15672" # Management UI
+      - "5672:5672"   # RabbitMQ
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - helpdesk_network
+  
   service-discovery:
     container_name: 'service-discovery'
     build:
       context: ./service-discovery
       dockerfile: Dockerfile
     environment:
+      - PROFILE_ACTIVE=dev
       - SERVER_PORT=8761
     ports:
       - "8761:8761"
@@ -48,17 +54,13 @@ services:
       context: ./api-gateway
       dockerfile: Dockerfile
     environment:
+      - PROFILE_ACTIVE=dev
       - EUREKA_URI=http://service-discovery:8761/eureka
       - SERVER_PORT=8765
     ports:
       - "8765:8765"
     expose:
       - 8765
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://api-gateway:8765/actuator/health" ]
-      interval: 10s
-      timeout: 5s
-      retries: 3
     depends_on:
       service-discovery:
         condition: service_healthy
@@ -109,27 +111,33 @@ services:
     depends_on:
       service-discovery:
         condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     networks:
       - helpdesk_network
 
-  # email-service:
-  #   container_name: 'email-service'
-  #   build:
-  #     context: ./email-service
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     - PROFILE_ACTIVE=dev
-  #     - EUREKA_URI=http://service-discovery:8761/eureka
-  #     - RABBITMQ_HOST=rabbitmq
-  #     - RABBITMQ_PORT=5672
-  #     - RABBITMQ_USERNAME=guest
-  #     - RABBITMQ_PASSWORD=guest
-  #     - RABBITMQ_CONNECTION_TIMEOUT=10000
-  #   depends_on:
-  #     service-discovery:
-  #       condition: service_healthy
-  #   networks:
-  #     - helpdesk_network
+  email-service:
+    container_name: 'email-service'
+    build:
+      context: ./email-service
+      dockerfile: Dockerfile
+    environment:
+      - PROFILE_ACTIVE=dev
+      - EUREKA_URI=http://service-discovery:8761/eureka
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_CONNECTION_TIMEOUT=10000
+      - MAIL_USERNAME=eduardodevjavaweb@gmail.com
+      - MAIL_PASSWORD=nxev ubuc bxfa ikmv
+    depends_on:
+      service-discovery:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - helpdesk_network
 
 networks:
   helpdesk_network:
