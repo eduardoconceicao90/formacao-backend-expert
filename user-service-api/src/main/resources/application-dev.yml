@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: 'user-service-api'
+  data:
+    mongodb:
+      uri: 'mongodb+srv://help-desk-user:h3lp-D3sk-u53r@clusterhelpdesk.byesqfs.mongodb.net/helpdeskdb?retryWrites=true&w=majority&appName=ClusterHelpDesk'
+      auto-index-creation: true
+
+springdoc:
+  openapi:
+    title: 'User Service API'
+    description: 'Component responsible for user management created on Formação Backend Expert'
+    version: '1.0.0'
+
+server:
+  port: 0
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

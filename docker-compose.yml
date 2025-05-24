@@ -42,32 +42,6 @@ services:
     networks:
       - helpdesk_network
 
-  config-server:
-    container_name: 'config-server'
-    build:
-      context: ./config-server
-      dockerfile: Dockerfile
-    environment:
-      - EUREKA_URI=http://service-discovery:8761/eureka
-      - CONFIG_SERVER_URI=https://github.com/eduardoconceicao90/formacao-backend-expert-configs
-      - CONFIG_SERVER_USERNAME=eduardoconceicao90
-      - CONFIG_SERVER_PASSWORD=*********************************************
-      - SERVER_PORT=8888
-    ports:
-      - "8888:8888"
-    expose:
-      - 8888
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://config-server:8888/actuator/health" ]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-    depends_on:
-      service-discovery:
-        condition: service_healthy
-    networks:
-      - helpdesk_network
-      
   api-gateway:
     container_name: 'api-gateway'
     build:
@@ -91,41 +65,52 @@ services:
     networks:
       - helpdesk_network
       
-  # auth-service-api:
-  #   container_name: 'auth-service-api'
-  #   build:
-  #     context: ./auth-service-api
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     - PROFILE_ACTIVE=dev
-  #     - EUREKA_URI=http://service-discovery:8761/eureka
-  #     - CONFIG_SERVER_URI=http://config-server:8888
-  #   networks:
-  #     - helpdesk_network
+  auth-service-api:
+    container_name: 'auth-service-api'
+    build:
+      context: ./auth-service-api
+      dockerfile: Dockerfile
+    environment:
+      - PROFILE_ACTIVE=dev
+      - EUREKA_URI=http://service-discovery:8761/eureka
+    depends_on:
+      service-discovery:
+        condition: service_healthy
+    networks:
+      - helpdesk_network
             
-  # user-service-api:
-  #   container_name: 'user-service-api'
-  #   build:
-  #     context: ./user-service-api
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     - PROFILE_ACTIVE=dev
-  #     - EUREKA_URI=http://service-discovery:8761/eureka
-  #     - CONFIG_SERVER_URI=http://config-server:8888
-  #   networks:
-  #     - helpdesk_network
+  user-service-api:
+    container_name: 'user-service-api'
+    build:
+      context: ./user-service-api
+      dockerfile: Dockerfile
+    environment:
+      - PROFILE_ACTIVE=dev
+      - EUREKA_URI=http://service-discovery:8761/eureka
+    depends_on:
+      service-discovery:
+        condition: service_healthy
+    networks:
+      - helpdesk_network
 
-  # order-service-api:
-  #   container_name: 'order-service-api'
-  #   build:
-  #     context: ./order-service-api
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     - PROFILE_ACTIVE=dev
-  #     - EUREKA_URI=http://service-discovery:8761/eureka
-  #     - CONFIG_SERVER_URI=http://config-server:8888
-  #   networks:
-  #     - helpdesk_network
+  order-service-api:
+    container_name: 'order-service-api'
+    build:
+      context: ./order-service-api
+      dockerfile: Dockerfile
+    environment:
+      - PROFILE_ACTIVE=dev
+      - EUREKA_URI=http://service-discovery:8761/eureka
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_CONNECTION_TIMEOUT=10000
+    depends_on:
+      service-discovery:
+        condition: service_healthy
+    networks:
+      - helpdesk_network
 
   # email-service:
   #   container_name: 'email-service'
@@ -135,7 +120,14 @@ services:
   #   environment:
   #     - PROFILE_ACTIVE=dev
   #     - EUREKA_URI=http://service-discovery:8761/eureka
-  #     - CONFIG_SERVER_URI=http://config-server:8888
+  #     - RABBITMQ_HOST=rabbitmq
+  #     - RABBITMQ_PORT=5672
+  #     - RABBITMQ_USERNAME=guest
+  #     - RABBITMQ_PASSWORD=guest
+  #     - RABBITMQ_CONNECTION_TIMEOUT=10000
+  #   depends_on:
+  #     service-discovery:
+  #       condition: service_healthy
   #   networks:
   #     - helpdesk_network
 

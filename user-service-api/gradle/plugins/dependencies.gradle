@@ -18,15 +18,7 @@ dependencies {
     }
 
     implementation ('org.springframework.boot:spring-boot-starter-web') {
-        because('Starter para criar aplicação web, incluindo aplicação RESTful, usando Spring MVC. Usa Tomcat como container padrão.')
-    }
-
-    implementation ('org.springframework.cloud:spring-cloud-starter-config') {
-        because('Starter para integrar com o Spring Cloud Config Server')
-    }
-
-    implementation ('org.springframework.cloud:spring-cloud-starter-bootstrap') {
-        because('Starter para integrar com o Spring Cloud Config Server')
+        because('Starter para criar aplicação web, incluindo aplicação RESTful.')
     }
 
     implementation ('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client') {

@@ -3,6 +3,3 @@ spring:
     name: 'email-service'
   profiles:
     active: dev
-  cloud:
-    config:
-      uri: 'config-server'

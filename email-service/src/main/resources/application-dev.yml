@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: 'email-service'
+
+mail:
+  username: ${MAIL_USERNAME:eduardodevjavaweb@gmail.com}
+  password: ${MAIL_PASSWORD:nxev ubuc bxfa ikmv}
+
+server:
+  port: 0
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

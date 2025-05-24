@@ -3,6 +3,3 @@ spring:
     name: 'order-service-api'
   profiles:
     active: dev
-  cloud:
-    config:
-      uri: 'config-server'

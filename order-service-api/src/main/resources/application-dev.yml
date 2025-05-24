@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: 'order-service-api'
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        jdbc:
+          time_zone: America/Sao_Paulo
+  datasource:
+    url: 'jdbc:mysql://helpdeskdb.ciz2i66cmf73.us-east-1.rds.amazonaws.com:3306/helpdeskdb?useSSL=false&serverTimezone=UTC'
+    username: 'helpdeskuser'
+    password: 'helpdeskuser'
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 20000
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    connection-timeout: 10000
+
+springdoc:
+  openapi:
+    title: 'Order Service API'
+    description: 'API responsible for managing service orders created on Formação Backend Expert'
+    version: '1.0.0'
+
+server:
+  port: 0
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

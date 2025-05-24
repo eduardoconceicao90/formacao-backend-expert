@@ -13,8 +13,12 @@ dependencies {
         because('Lib para compartilhar código comum entre os projetos')
     }
 
-    implementation('org.springframework.boot:spring-boot-starter-web') {
-        because('Starter para desenvolvimento de aplicativos web com Spring Boot')
+    implementation('org.springframework.boot:spring-boot-actuator') {
+        because('Monitoramento, métricas, health checks e endpoints de gerenciamento')
+    }
+
+    implementation ('org.springframework.boot:spring-boot-starter-web') {
+        because('Starter para criar aplicação web, incluindo aplicação RESTful.')
     }
 
     implementation('org.springframework.cloud:spring-cloud-starter-bootstrap') {

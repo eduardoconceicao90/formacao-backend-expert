@@ -3,6 +3,3 @@ spring:
     name: 'user-service-api'
   profiles:
     active: dev
-  cloud:
-    config:
-      uri: 'config-server'

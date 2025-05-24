@@ -3,6 +3,3 @@ spring:
     name: 'auth-service-api'
   profiles:
     active: dev
-  cloud:
-    config:
-      uri: 'config-server'
