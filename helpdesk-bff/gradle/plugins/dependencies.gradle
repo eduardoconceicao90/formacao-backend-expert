@@ -17,6 +17,10 @@ dependencies {
         because('Starter para criar aplicação web, incluindo aplicação RESTful.')
     }
 
+    implementation ('org.springframework.boot:spring-boot-starter-actuator') {
+        because('Monitoramento, métricas, health checks e endpoints de gerenciamento')
+    }
+
     implementation('org.springframework.boot:spring-boot-starter-validation') {
         because('Starter para validação de dados com o Spring Validation')
     }
