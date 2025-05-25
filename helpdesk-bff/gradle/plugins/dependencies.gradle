@@ -57,10 +57,6 @@ dependencies {
         because('Starter para acesso a dados com Spring Data JPA')
     }
 
-//    implementation('org.springframework.boot:spring-boot-starter-data-redis') {
-//        because('Starter para integração com o Redis')
-//    }
-
     implementation('org.springframework.boot:spring-boot-starter-security') {
         because('Starter para segurança de aplicações com Spring Security')
     }
@@ -76,6 +72,10 @@ dependencies {
     runtimeOnly('io.jsonwebtoken:jjwt-jackson:0.11.2') {
         because('Biblioteca para manipulação de tokens JWT')
     }
+
+//    implementation('org.springframework.boot:spring-boot-starter-data-redis') {
+//        because('Starter para integração com o Redis')
+//    }
 
     testImplementation ('org.springframework.boot:spring-boot-starter-test') {
         because('Spring Boot Test Starter')
