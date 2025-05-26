@@ -41,6 +41,7 @@ public interface UserController {
                             schema = @Schema(implementation = StandardError.class)
                     ))
     })
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN')")
     @GetMapping("/{id}")
     ResponseEntity<UserResponse> findById(
             @Parameter(description = "User id", required = true, example = "64a2dc9d48a6a977cdca11c8")
@@ -63,6 +64,7 @@ public interface UserController {
                             schema = @Schema(implementation = StandardError.class)
                     ))
     })
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping
     ResponseEntity<Void> save(
         @Valid @RequestBody CreateUserRequest createUserRequest
@@ -82,6 +84,7 @@ public interface UserController {
                             schema = @Schema(implementation = StandardError.class)
                     ))
     })
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN')")
     @GetMapping
     ResponseEntity<List<UserResponse>> findAll();
 
@@ -103,6 +106,7 @@ public interface UserController {
                     content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = StandardError.class))
             )
     })
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     ResponseEntity<UserResponse> update(
             @Parameter(description = "User id", required = true, example = "64a2dc9d48a6a977cdca11c8")
