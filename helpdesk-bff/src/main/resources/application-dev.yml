@@ -7,6 +7,9 @@ springdoc:
 server:
   port: ${SERVER_PORT:8080}
 
+jwt:
+  secret: 'fteCGmFQxqIIPYzz5X2AD3Ft64ZSgQ0PugoYWkoF5+uMrC+bDfSIl6WMk/qL+dunFLI5foEtDcIopX/atgLXmVxZkEs9GXiyaEPOwRD5dbk='
+
 eureka:
   client:
     fetch-registry: true
