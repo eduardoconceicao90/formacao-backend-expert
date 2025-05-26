@@ -73,9 +73,13 @@ dependencies {
         because('Biblioteca para manipulação de tokens JWT')
     }
 
-//    implementation('org.springframework.boot:spring-boot-starter-data-redis') {
-//        because('Starter para integração com o Redis')
-//    }
+    implementation('org.springframework.boot:spring-boot-starter-data-redis') {
+        because('Starter para integração com o Redis')
+    }
+
+    // Lombok - Redução de código boilerplate
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
     testImplementation ('org.springframework.boot:spring-boot-starter-test') {
         because('Spring Boot Test Starter')

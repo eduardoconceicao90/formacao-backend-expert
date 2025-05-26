@@ -38,8 +38,14 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         if (header.startsWith("Bearer ")) {
             try {
                 UsernamePasswordAuthenticationToken auth = getAuthentication(request);
-                if (auth != null) SecurityContextHolder.getContext().setAuthentication(auth);
+                if (auth != null) {
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                } else {
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acesso negado");
+                    return;
+                }
             } catch (Exception e) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Token inválido ou sem permissão");
                 return;
             }
         }
