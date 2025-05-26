@@ -2,6 +2,7 @@ package io.gitbhub.eduardoconceicao90.helpdesk_bff.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
+import models.exceptions.JWTCustomException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,7 @@ public class JWTUtil {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException ex) {
-            throw new RuntimeException(ex.getMessage());
+            throw new JWTCustomException(ex.getMessage());
         }
     }
 
@@ -42,7 +43,7 @@ public class JWTUtil {
                             (GrantedAuthority) () -> authority.get("authority"))
                     .toList();
         }
-        throw new RuntimeException("Invalid token");
+        throw new JWTCustomException("Invalid token");
     }
 
 }
