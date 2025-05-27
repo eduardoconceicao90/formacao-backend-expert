@@ -1,4 +1,7 @@
 spring:
+  openfeign:
+    okhttp:
+      enabled: true
   data:
     redis:
       host: ${REDIS_HOST:localhost}
