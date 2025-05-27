@@ -139,6 +139,28 @@ services:
     networks:
       - helpdesk_network
 
+  redis:
+    container_name: 'redis'
+    image: redis:latest
+    environment:
+      - PROFILE_ACTIVE=dev
+      - REDIS_HOST=localhost
+      - REDIS_PORT=6379
+    ports:
+      - "6379:6379"
+    expose:
+      - 6379
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: redis-cli ping
+    networks:
+      - helpdesk_network
+
 networks:
   helpdesk_network:
     driver: bridge
+
+volumes:
+  redis_data:
+    driver: local

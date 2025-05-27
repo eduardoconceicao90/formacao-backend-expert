@@ -5,6 +5,8 @@ import models.requests.CreateOrderRequest;
 import models.requests.UpdateOrderRequest;
 import models.responses.OrderResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -16,26 +18,35 @@ public class OrderService {
     @Autowired
     private OrderFeignClient orderFeignClient;
 
+    @Cacheable(value = "orders", key = "#id")
     public OrderResponse findById(final Long id) {
         return orderFeignClient.findById(id).getBody();
     }
 
+    @CacheEvict(value = "orders", allEntries = true)
     public void save(CreateOrderRequest createOrderRequest) {
         orderFeignClient.save(createOrderRequest);
     }
 
+    @CacheEvict(value = "orders", allEntries = true)
     public OrderResponse update(final Long id, UpdateOrderRequest updateOrderRequest) {
         return orderFeignClient.update(id, updateOrderRequest).getBody();
     }
 
+    @CacheEvict(value = "orders", allEntries = true)
     public void deleteById(final Long id) {
         orderFeignClient.deleteById(id);
     }
 
+    @Cacheable(value = "orders")
     public List<OrderResponse> findAll() {
         return orderFeignClient.findAll().getBody();
     }
 
+    @Cacheable(
+            value = "orders",
+            key = "'page=' + #page + ',size=' + #size + ',direction=' + #direction + ',sort=' + #sort"
+    )
     public Page<OrderResponse> findAllPaginated(Integer page, Integer size, String direction, String sort) {
         return orderFeignClient.findAllPaginated(page, size, direction, sort).getBody();
     }
