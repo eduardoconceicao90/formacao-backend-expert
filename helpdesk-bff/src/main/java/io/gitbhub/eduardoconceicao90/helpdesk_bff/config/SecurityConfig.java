@@ -5,7 +5,6 @@ import io.gitbhub.eduardoconceicao90.helpdesk_bff.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,7 +24,8 @@ public class SecurityConfig {
     @Autowired
     private JWTUtil jwtUtil;
 
-    public static final String[] SWAGGER_WHITELIST = {
+    public static final String[] PUBLIC_ROUTES = {
+            "/api/auth/**",
             "/v3/api-docs/**",
             "/swagger-ui.html",
             "/swagger-ui/**",
@@ -38,12 +38,11 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new JWTAuthorizationFilter(
-                        authConfig.getAuthenticationManager(), jwtUtil),
+                        authConfig.getAuthenticationManager(), jwtUtil, PUBLIC_ROUTES),
                         JWTAuthorizationFilter.class
                 )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST,"/api/auth/**").permitAll()
-                        .requestMatchers(SWAGGER_WHITELIST).permitAll()
+                        .requestMatchers(PUBLIC_ROUTES).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

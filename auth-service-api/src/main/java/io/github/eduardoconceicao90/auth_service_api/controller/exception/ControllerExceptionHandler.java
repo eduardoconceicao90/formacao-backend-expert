@@ -2,6 +2,7 @@ package io.github.eduardoconceicao90.auth_service_api.controller.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import models.exceptions.RefreshTokenExpired;
+import models.exceptions.ResourceNotFoundException;
 import models.exceptions.StandardError;
 import models.exceptions.ValidationException;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static java.time.LocalDateTime.now;
+import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
@@ -31,7 +33,22 @@ public class ControllerExceptionHandler {
                         .error(UNAUTHORIZED.getReasonPhrase())
                         .message(ex.getMessage())
                         .path(request.getRequestURI())
-                    .build()
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    ResponseEntity<StandardError> handleNotFoundException(
+            final ResourceNotFoundException ex, final HttpServletRequest request
+    ) {
+        return ResponseEntity.status(NOT_FOUND).body(
+                StandardError.builder()
+                        .timestamp(now())
+                        .status(NOT_FOUND.value())
+                        .error(NOT_FOUND.getReasonPhrase())
+                        .message(ex.getMessage())
+                        .path(request.getRequestURI())
+                        .build()
         );
     }
 
