@@ -5,6 +5,7 @@ import io.gitbhub.eduardoconceicao90.helpdesk_bff.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,7 +26,10 @@ public class SecurityConfig {
     private JWTUtil jwtUtil;
 
     public static final String[] PUBLIC_ROUTES = {
-            "/api/auth/**",
+            "/api/auth/login",
+            "/api/auth/refresh-token",
+            "/swagger-ui/index.html",
+            "/v3/api-docs",
             "/v3/api-docs/**",
             "/swagger-ui.html",
             "/swagger-ui/**",
@@ -41,7 +45,7 @@ public class SecurityConfig {
                         authConfig.getAuthenticationManager(), jwtUtil, PUBLIC_ROUTES),
                         JWTAuthorizationFilter.class
                 )
-                .authorizeHttpRequests(authorize -> authorize
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_ROUTES).permitAll()
                         .anyRequest().authenticated()
                 )

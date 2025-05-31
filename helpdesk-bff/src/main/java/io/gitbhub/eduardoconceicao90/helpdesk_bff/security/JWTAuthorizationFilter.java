@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.google.common.net.HttpHeaders.AUTHORIZATION;
@@ -36,9 +37,13 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if(isPublicRoute(request.getRequestURI())){
-            chain.doFilter(request, response);
-            return;
+        String path = request.getRequestURI();
+
+        for (String route : publicRoutes) {
+            if (path.matches(route.replace("**", ".*"))) {
+                chain.doFilter(request, response);
+                return;
+            }
         }
 
         final String header = request.getHeader(AUTHORIZATION);
@@ -69,13 +74,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         List<GrantedAuthority> authorities = jwtUtil.getAuthorities(claims);
 
         return username != null ? new UsernamePasswordAuthenticationToken(username, null, authorities) : null;
-    }
-
-    private boolean isPublicRoute(String uri) {
-        for (String route : publicRoutes) {
-            if (uri.startsWith(route)) return true;
-        }
-        return false;
     }
 
     private void handleException(String requestURI, String message, HttpServletResponse response) throws IOException {

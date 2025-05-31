@@ -153,10 +153,10 @@ services:
     networks:
       - helpdesk_network
 
-  helpedesk-bff:
-    container_name: 'helpedesk-bff'
+  helpdesk-bff:
+    container_name: 'helpdesk-bff'
     build:
-      context: ./helpedesk-bff
+      context: ./helpdesk-bff
       dockerfile: Dockerfile
     environment:
       - PROFILE_ACTIVE=dev
