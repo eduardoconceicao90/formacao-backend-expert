@@ -142,10 +142,6 @@ services:
   redis:
     container_name: 'redis'
     image: redis:latest
-    environment:
-      - PROFILE_ACTIVE=dev
-      - REDIS_HOST=localhost
-      - REDIS_PORT=6379
     ports:
       - "6379:6379"
     expose:
@@ -154,6 +150,28 @@ services:
       - redis_data:/data
     healthcheck:
       test: redis-cli ping
+    networks:
+      - helpdesk_network
+
+  helpedesk-bff:
+    container_name: 'helpedesk-bff'
+    build:
+      context: ./helpedesk-bff
+      dockerfile: Dockerfile
+    environment:
+      - PROFILE_ACTIVE=dev
+      - EUREKA_URI=http://service-discovery:8761/eureka
+      - REDIS_HOST=localhost
+      - REDIS_PORT=6379
+    ports:
+      - "8080:8080"
+    expose:
+      - 8080
+    depends_on:
+      service-discovery:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     networks:
       - helpdesk_network
 

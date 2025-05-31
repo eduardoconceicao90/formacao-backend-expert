@@ -2,4 +2,4 @@ spring:
   application:
     name: 'auth-service-api'
   profiles:
-    active: dev
+    active: ${PROFILE_ACTIVE:dev}

@@ -2,4 +2,4 @@ spring:
   application:
     name: 'email-service'
   profiles:
-    active: dev
+    active: ${PROFILE_ACTIVE:dev}
